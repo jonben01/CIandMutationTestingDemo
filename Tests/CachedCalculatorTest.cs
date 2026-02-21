@@ -93,4 +93,91 @@ public class CachedCalculatorTest
 
         Assert.That(result, Is.EqualTo(expected));
     }
+
+
+    private void AssertCachedCallTwice(TestDelegate action, CachedCalculator calc)
+    {
+        action();
+        var countAfterFirst = calc._cache.Count;
+        
+        Assert.DoesNotThrow(action);
+        Assert.That(calc._cache, Has.Count.EqualTo(countAfterFirst));
+    }
+    
+    [Test]
+    public void Add_Uses_Cache()
+    {
+        var calc = new CachedCalculator();
+        AssertCachedCallTwice(() => calc.Add(1, 2), calc);
+    }
+    [Test]
+    public void Multiply_Uses_Cache()
+    {
+        var calc = new CachedCalculator();
+        AssertCachedCallTwice(() => calc.Multiply(1, 2), calc);
+    }
+    [Test]
+    public void Subtract_Uses_Cache()
+    {
+        var calc = new CachedCalculator();
+        AssertCachedCallTwice(() => calc.Subtract(10, 5), calc);
+    }
+
+    [Test]
+    public void Divide_Uses_Cache()
+    {
+        var calc = new CachedCalculator();
+        AssertCachedCallTwice(() => calc.Divide(10, 5), calc);
+    }
+
+    [Test]
+    public void Factorial_Uses_Cache()
+    {
+        var calc = new CachedCalculator();
+        AssertCachedCallTwice(() => calc.Factorial(5), calc);
+    }
+    [Test]
+    public void IsPrime_Uses_Cache()
+    {
+        var calc = new CachedCalculator();
+        AssertCachedCallTwice(() => calc.IsPrime(7), calc);
+    }
+    
+    
+    //the following tests try to cover caching related mutations by ensuring that the right key is stored in the cache
+    //thus killing statement/block removal, as they won't add anything to the cache.
+    
+    [Test]
+    public void IsPrime_FirstCall_StoresExpectedKeyInCache()
+    {
+        var calc = new CachedCalculator();
+
+        calc.IsPrime(7);
+        
+        Assert.That(calc._cache.ContainsKey("7IsPrime"), Is.True);
+        Assert.That(calc._cache, Has.Count.EqualTo(1));
+    }
+
+    [Test]
+    public void Factorial_FirstCall_StoresExpectedKeyInCache()
+    {
+        var calc = new CachedCalculator();
+
+        calc.Factorial(5);
+        
+        Assert.That(calc._cache.ContainsKey("5Factorial"), Is.True);
+        Assert.That(calc._cache, Has.Count.EqualTo(1));
+    }
+
+    [Test]
+    public void Add_FirstCall_StoresExpectedKeyInCache()
+    {
+        var calc = new CachedCalculator();
+
+        calc.Add(2, 3);
+        
+        Assert.That(calc._cache.ContainsKey("2Add3"), Is.True);
+        Assert.That(calc._cache, Has.Count.EqualTo(1));
+    }
+    
 }
