@@ -25,12 +25,12 @@ jobs:
 
       - name: Run unit tests
         run: |
-          dotnet test --configuration Release --collect:"Code Coverage"
+          dotnet test --configuration Release --collect:"XPlat Code Coverage"
         
       - name: Generate report
         run: |
           reportgenerator \
-            -reports:"**/coverage.cobertura.xml;**/*.cobertura.xml" \
+            -reports:"**/TestResults/*/coverage.cobertura.xml"
             -targetdir:"coverage-report" \
             -reporttypes:Html
 
