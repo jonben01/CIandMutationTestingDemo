@@ -27,19 +27,18 @@ jobs:
         run: |
           dotnet test --configuration Release \
             /p:CollectCoverage=true \
-            /p:CoverletOutput=./TestResults/Coverage/ \
             /p:CoverletOutputFormat=cobertura
         
       - name: Generate report
         run: |
           reportgenerator \
-            -reports:"coverage.xml" \
+            -reports:"**/coverage.cobertura.xml;**/*.cobertura.xml" \
             -targetdir:"coverage-report" \
             -reporttypes:Html
 
       - name: Run Mutation Tests
         run: |
-          dotnet stryker --threshold-high 80 --threshold-low 80 --threshold-break 80 --report html
+          dotnet stryker --threshold-high 80 --threshold-low 80 --threshold-break 80 --reporter html
 
       - name: Collect Coverage Report
         if: always()
