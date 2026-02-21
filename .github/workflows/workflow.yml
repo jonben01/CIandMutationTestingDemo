@@ -20,7 +20,7 @@ jobs:
 
       - name: Install required tools
         run: |
-          dotnet rool install -g dotnet-reportgenerator-globaltool
+          dotnet tool install -g dotnet-reportgenerator-globaltool
           dotnet tool install -g dotnet-stryker
 
       - name: Run unit tests
@@ -39,7 +39,7 @@ jobs:
 
       - name: Run Mutation Tests
         run: |
-          dotnet stryker --threeshold-high 80 --threshold-low 80 --threshold-break 80
+          dotnet stryker --threshold-high 80 --threshold-low 80 --threshold-break 80
 
       - name: Collect Coverage Report
         if: always()
