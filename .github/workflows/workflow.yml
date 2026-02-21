@@ -36,7 +36,7 @@ jobs:
 
       - name: Run Mutation Tests
         run: |
-          dotnet stryker --threshold-high 80 --threshold-low 80 --threshold-break 80 --reporter html --output StrykerOutput
+          dotnet stryker --threshold-high 80 --threshold-low 80 --threshold-break 80 --reporter html
 
       - name: Collect Coverage Report
         if: always()
